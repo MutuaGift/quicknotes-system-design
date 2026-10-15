@@ -32,6 +32,16 @@ const titleError = document.getElementById("title-error");
    deleting can redraw the list without asking again. */
 let notes = [];
 
+/* Ids of notes that this page created with POST.
+
+   JSONPlaceholder is a fake API: it answers a create with
+   201 and an id, but it never really stores anything, and it
+   answers DELETE on any id with 200 whether or not the note
+   was ever there. So a note added by createNote exists only
+   in this browser tab. Keeping its id lets the delete say so
+   honestly instead of implying the server really removed it. */
+const localOnlyIds = new Set();
+
 
 /* ---- status line ---------------------------------- */
 
@@ -79,6 +89,25 @@ function renderNotes(list) {
       body.textContent = "No body.";
     }
     item.appendChild(body);
+
+    /* Each note carries its own delete button, so one bad
+       request only ever touches one note */
+    const actions = document.createElement("div");
+    actions.className = "note-actions";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.className = "delete-btn";
+    deleteBtn.textContent = "Delete";
+    /* The id is kept on the button purely so the test harness
+       and a reader can see which note a button belongs to */
+    deleteBtn.dataset.noteId = String(note.id);
+    deleteBtn.addEventListener("click", function () {
+      deleteNote(note.id, deleteBtn);
+    });
+
+    actions.appendChild(deleteBtn);
+    item.appendChild(actions);
 
     notesList.appendChild(item);
   });
@@ -202,6 +231,10 @@ async function createNote(event) {
 
     const created = result.data;
 
+    /* Remember that this one only exists in this tab, so the
+       delete button can be honest about it later */
+    localOnlyIds.add(created.id);
+
     /* Newest first, the way a feed reads */
     notes.unshift(created);
     renderNotes(notes);
@@ -234,3 +267,67 @@ titleInput.addEventListener("input", function () {
     titleInput.classList.remove("has-error");
   }
 });
+
+
+/* ---- DELETE: remove a note ------------------------ */
+
+/* About JSONPlaceholder and DELETE: the request really is
+   sent, because that is the call we are demonstrating. But
+   the fake API replies 200 to a delete of any id, including
+   ids that never existed, so a 200 here is weak evidence -
+   it proves the endpoint answered, not that anything was
+   deleted.
+
+   So the note is removed from the list only after a
+   successful response, and the message says plainly which
+   kind of note it was. Notes this page created are flagged
+   in localOnlyIds, because those were never on the server
+   to begin with. Against the real QuickNotes API, where
+   DELETE /notes/{id} is specified to answer 204, the same
+   code path removes a genuinely stored note. */
+async function deleteNote(noteId, button) {
+  const wasLocalOnly = localOnlyIds.has(noteId);
+
+  /* Hold this one button, and the other two, so the list
+     cannot be redrawn while the request is in flight */
+  button.disabled = true;
+  submitBtn.disabled = true;
+  loadBtn.disabled = true;
+  setStatus("Deleting note...", "is-loading");
+
+  try {
+    const result = await request("/" + noteId, { method: "DELETE" });
+
+    /* Only now is the note taken off the list */
+    notes = notes.filter(function (note) {
+      return note.id !== noteId;
+    });
+    localOnlyIds.delete(noteId);
+    renderNotes(notes);
+
+    if (wasLocalOnly) {
+      setStatus(
+        "Note removed from this page (id " + noteId + "). JSONPlaceholder does not store created notes, so there was nothing on the server to delete.",
+        "is-success"
+      );
+    } else {
+      setStatus(
+        "Note deleted (status " + result.status + ", id " + noteId + ").",
+        "is-success"
+      );
+    }
+  } catch (error) {
+    /* The note stays in the list, because it was not deleted.
+       Saying "deleted" here would be a lie the user could
+       only discover by reloading the page. */
+    setStatus("Could not delete the note: " + error.message, "is-error");
+  } finally {
+    submitBtn.disabled = false;
+    loadBtn.disabled = false;
+    /* The button is gone now in the success case, so this only
+       matters when the delete failed and the note stayed */
+    if (button.isConnected) {
+      button.disabled = false;
+    }
+  }
+}

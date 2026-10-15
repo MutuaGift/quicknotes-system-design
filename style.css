@@ -218,6 +218,25 @@ ul.notes li.note p.is-empty {
   font-style: italic;
 }
 
+/* The row of actions under each note. The delete button is
+   smaller than the main buttons because it acts on one item
+   rather than on the whole page. */
+.note-actions {
+  margin-top: 0.6rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+button.delete-btn {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  background-color: #c53030;
+}
+
+button.delete-btn:hover:not(:disabled) {
+  background-color: #9b2c2c;
+}
+
 /* The empty state - dashed border to read as "nothing here" */
 ul.notes li.empty {
   padding: 1rem;
