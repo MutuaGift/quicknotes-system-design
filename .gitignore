@@ -1,0 +1,8 @@
+# Nothing here needs node_modules, but keep the usual out of the way
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Local environment overrides
+.env
+.env.local

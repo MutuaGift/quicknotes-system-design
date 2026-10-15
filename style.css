@@ -1,0 +1,191 @@
+/* ============================================
+   QuickNotes - API client stylesheet
+
+   Built on the Day 2 "QuickNotes" stylesheet so the
+   project keeps the same look: same colours, same
+   spacing, same card layout.
+   ============================================ */
+
+/* 1. Reset - border-box everywhere so padding
+      never adds to an element's declared width */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+  color: #1f2933;
+  background-color: #f4f6f8;
+}
+
+/* 2. Header - dark banner, white text */
+header {
+  background-color: #1f2933;
+  color: #ffffff;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 2rem;
+}
+
+header .tagline {
+  margin: 0;
+  color: #cbd2d9;
+}
+
+/* 3. Main - centred with a maximum width,
+      each section becomes a white card */
+main {
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1rem;
+}
+
+section {
+  background-color: #ffffff;
+  border: 1px solid #e4e7eb;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(31, 41, 51, 0.08);
+}
+
+section h2 {
+  margin-top: 0;
+}
+
+/* 4. Buttons - with a transition */
+button {
+  padding: 0.7rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #2b6cb0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #1f4e79;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* A disabled button is dimmed and refuses the pointer,
+   so a request that is already running cannot be started twice */
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* 5. Status line - the four states are told apart by
+      colour and by a coloured bar down the left edge */
+.status {
+  margin: 1rem 0;
+  padding: 0.6rem 0.85rem;
+  font-weight: 600;
+  background-color: #f8fafc;
+  border: 1px solid #e4e7eb;
+  border-left: 5px solid #cbd2d9;
+  border-radius: 4px;
+}
+
+.status.is-loading {
+  color: #1a365d;
+  background-color: #ebf4ff;
+  border-left-color: #2b6cb0;
+}
+
+.status.is-success {
+  color: #22543d;
+  background-color: #f0fff4;
+  border-left-color: #38a169;
+}
+
+.status.is-error {
+  color: #822727;
+  background-color: #fff5f5;
+  border-left-color: #e53e3e;
+}
+
+/* 6. Notes list - no markers, cards instead */
+ul.notes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.notes li.note {
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.75rem;
+  background-color: #f8fafc;
+  border: 1px solid #e4e7eb;
+  border-left: 4px solid #2b6cb0;
+  border-radius: 6px;
+}
+
+ul.notes li.note h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+ul.notes li.note p {
+  margin: 0;
+  color: #4a5568;
+}
+
+/* A note with no body still needs to sit correctly */
+ul.notes li.note p.is-empty {
+  color: #a0aec0;
+  font-style: italic;
+}
+
+/* The empty state - dashed border to read as "nothing here" */
+ul.notes li.empty {
+  padding: 1rem;
+  color: #616e7c;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px dashed #cbd2d9;
+  border-radius: 6px;
+}
+
+/* 7. Footer */
+footer {
+  margin-top: 2rem;
+  padding: 1rem;
+  color: #cbd2d9;
+  text-align: center;
+  background-color: #1f2933;
+}
+
+/* 8. Media query - smaller screens */
+@media (max-width: 600px) {
+  header {
+    padding: 1rem 0.75rem;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  main {
+    padding: 1.25rem 0.75rem;
+  }
+
+  section {
+    padding: 1rem;
+  }
+}
