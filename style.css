@@ -90,7 +90,73 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* 5. Status line - the four states are told apart by
+/* 5. The form - fields stacked, full width */
+form p {
+  margin: 0 0 1rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.6rem;
+  font: inherit;
+  color: #1f2933;
+  background-color: #ffffff;
+  border: 1px solid #cbd2d9;
+  border-radius: 4px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #2b6cb0;
+  outline-offset: 1px;
+}
+
+/* The submit button spans the card like the load button */
+#submit-btn {
+  width: 100%;
+}
+
+/* The hint under the title, and the validation message.
+   Both take up a line whether or not they have text, so
+   the card does not jump about while typing. */
+.hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+.field-error {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #c53030;
+}
+
+/* An invalid field is outlined, so the problem is visible on
+   the field itself and not only in the message below it */
+input.has-error,
+textarea.has-error {
+  border-color: #c53030;
+  outline: 2px solid #c53030;
+  outline-offset: 1px;
+}
+
+/* 6. Status line - the four states are told apart by
       colour and by a coloured bar down the left edge */
 .status {
   margin: 1rem 0;
@@ -120,7 +186,7 @@ button:disabled {
   border-left-color: #e53e3e;
 }
 
-/* 6. Notes list - no markers, cards instead */
+/* 7. Notes list - no markers, cards instead */
 ul.notes {
   list-style: none;
   margin: 0;
@@ -162,7 +228,7 @@ ul.notes li.empty {
   border-radius: 6px;
 }
 
-/* 7. Footer */
+/* 8. Footer */
 footer {
   margin-top: 2rem;
   padding: 1rem;
@@ -171,7 +237,7 @@ footer {
   background-color: #1f2933;
 }
 
-/* 8. Media query - smaller screens */
+/* 9. Media query - smaller screens */
 @media (max-width: 600px) {
   header {
     padding: 1rem 0.75rem;

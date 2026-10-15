@@ -16,11 +16,34 @@
 
   <main>
     <section>
+      <h2>Add a note</h2>
+
+      <!-- novalidate: the browser's own bubbles are turned off
+           because the checks and messages live in api.js, so
+           every browser behaves the same way -->
+      <form id="note-form" novalidate>
+        <div class="field">
+          <label for="title-input">Title</label>
+          <input type="text" id="title-input" autocomplete="off" placeholder="e.g. Pack for Monday">
+          <p class="field-error" id="title-error" role="alert"></p>
+          <p class="hint">Required, up to 100 characters. The body is optional.</p>
+        </div>
+
+        <div class="field">
+          <label for="body-input">Body</label>
+          <textarea id="body-input" rows="4" placeholder="Optional"></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn">Add note</button>
+      </form>
+    </section>
+
+    <section>
       <h2>Your notes</h2>
 
       <button type="button" id="load-btn">Load notes</button>
 
-      <p id="status" class="status">Press &quot;Load notes&quot; to begin.</p>
+      <p id="status" class="status">Press "Load notes" to begin.</p>
 
       <ul id="notes-list" class="notes"></ul>
     </section>
